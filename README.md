@@ -7,5 +7,5 @@ Author: Donglai Ma donglaima96@gmail.com
 
 ## To do
 
-- [] read the data and get the orignial data
-    - [] Step 1. Create the function for read the data
+- [x] read the data and get the orignial data
+    - [x] Step 1. Create the function for read the data
