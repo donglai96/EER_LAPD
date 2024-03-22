@@ -96,7 +96,7 @@ def get_channel_data(file_name, board_number, chan_number):
                                        FPGA_number=FPGA_number, CH_number= CH_number)
         
         # an progress bar
-    return None
+    return shot_data
 
 
 def read_sisboard_shot(file_path, shot_name, slot_number, FPGA_number, CH_number = 1, sis_id = 3305):
