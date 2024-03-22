@@ -8,4 +8,6 @@ Author: Donglai Ma donglaima96@gmail.com
 ## To do
 
 - [x] read the data and get the orignial data
-    - [x] Step 1. Create the function for read the data
+    - [x] Step 1. Create a easier function for read the data
+    - [ ] Step 2. Wave analysis, remember to filter low frequency
+    - [ ] Step 3. plot the data
