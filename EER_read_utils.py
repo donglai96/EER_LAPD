@@ -174,6 +174,7 @@ def read_motion(file_path):
     nshots = len(motion_data_dict['Shot number'])//(nx*ny*nz)
     if (nx > 1 and ny == 1 and nz == 1):
         geom = 'x-line'
+        
     else:
         raise ValueError ('Currently only support x-line')
     print('geometry is::', geom)
@@ -198,17 +199,24 @@ def lapd_6k_config(file_path, motionid = 0):
 def get_shot_index(nshots,nx, ishot=0, ix=0, iy=0):
         # data loop >> nshots -> xmotion -> ymotion
     return ishot + nshots*(ix + nx*iy)
-    # data loop >> nshots -> xmotion -> ymotion -> extra variable steps
-    # elif daqconfig == 1:
-    #     return ishot + nshotss*(ix + nxx*(iy + nyy*istep))
-    # # data loop >> nshots -> extra variable steps -> xmotion -> ymotion
-    # elif daqconfig == 2:
-    #     return ishot + nshotss*(istep + nsteps*(ix + nxx*iy))
-    # # data loop >> nshots
-    # elif daqconfig == 3:
-    #     return ishot + nshotss*istep
-    # # data loop >> nshots -> xmotion -> ymotion -> zmotion
-    # elif daqconfig == 4:
-    #     return ishot + nshotss*(ix + nxx*(iy + nyy*iz))
-    # else:
-    #     return 0
+
+
+def range_picker(r_default, r_user):
+        r_user = np.sort(r_user)
+        # returns default range if user range is out of bounds
+        if r_user[1] < r_default[0] or r_user[0] > r_default[1]:
+            return r_default
+        # otherwise returns the intersecting range
+        else:
+            return [np.amax([r_default[0], r_user[0]]), np.amin([r_default[1],
+                                                                 r_user[1]])]
+            
+def check_user_range_input(max_value, user_input):
+        if user_input is None:
+            return [0, max_value-1]
+        elif len(user_input) == 1:
+            return [user_input[0], user_input[0]]
+        elif len(user_input) == 2:
+            return range_picker([0, max_value-1], user_input)
+        else:
+            return [0, max_value-1]
