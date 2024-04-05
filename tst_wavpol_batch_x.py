@@ -12,18 +12,17 @@ from bdot_process import emf2bw
 import os
 
 datapath = '/data/BAPSF_Data/Energetic_Electron_Ring/jul2021/'
-#filename = '04-bfield-p25-plane-He-1kG-uwave-l5ms-mirror-min-305G.hdf5'
+filename = '04-bfield-p25-plane-He-1kG-uwave-l5ms-mirror-min-305G.hdf5'
 #filename = '11-bfield-bmirror-scan-p25-xline-uwave-l5ms-mirror-min-305G.hdf5'
-filename =  '16-bfield-bmirror-scan-p25-xline-uwave-l3ms-mirror-min-380G.hdf5'
+# filename =  '16-bfield-bmirror-scan-p25-xline-uwave-l3ms-mirror-min-380G.hdf5'
 #savedir = 'test_04_x_y/'
 
 filepath = datapath + filename
-for yy in range(1):
+os.mkdir('test_04_x20_y8' )
+savedir = ('test_04_x20_y8' + '/')
 
-    os.mkdir('test_16_x_y' + str(yy))
-    savedir = ('test_16_x_y' + str(yy) + '/')
-    for i in range(60):
-        data = read_lapd_data(filepath, rchan=[0, 1, 2], rshot=[8], xrange=[i], yrange=[yy])
+for i in range(8):
+        data = read_lapd_data(filepath, rchan=[0, 1, 2], rshot=[i], xrange=[20], yrange=[8])
 
         # Not sure how to get this one, remember to ask Xin!
 
@@ -51,7 +50,7 @@ for yy in range(1):
         by = by[ntrunc:-ntrunc]
         bz = bz[ntrunc:-ntrunc]
         tt = data['time'][ntrunc:-ntrunc]
-        
+
 
         # Number of points in FFT
         nopfft = 1024
@@ -59,11 +58,11 @@ for yy in range(1):
         steplength = nopfft / 2
         # No. of bins in frequency domain for averaging [1, 7]
         bin_freq = 7
-        
+
         result = pyspedas.analysis.twavpol.wavpol(tt, bx, by, bz, nopfft=nopfft, steplength=steplength, bin_freq=bin_freq)
         (timeline, freqline, powspec, degpol, waveangle,
                 elliptict, helict, pspec3, err_flag) = result
-        
+
         # make the figure
         fig, axs = plt.subplots(5, 1, figsize=[6.4, 12.8],\
                 sharex=True, constrained_layout=True)
@@ -157,7 +156,7 @@ for yy in range(1):
                 borderpad=0)
         cb = fig.colorbar(im, cax=axins, ticks=ticks, orientation='vertical')
         cb.ax.set_ylabel('Ellipticity')
-        file_id = savedir + 'x_' + str(int(i))
+        file_id = savedir + 'shot_' + str(int(i))
         plt.savefig(file_id + 'tst_wavpol.png', dpi=300)
 
         plt.show()
